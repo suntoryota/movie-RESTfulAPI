@@ -28,8 +28,20 @@ public class MovieController {
 	@Autowired
 	private MovieService service;
 	
-	//Build Add Movie 
-	@PostMapping("/add")
+	//Build Get List All Movie 
+	@GetMapping("/")
+	public ResponseEntity<List<Movie>> getAllMovies(){
+		return ResponseEntity.ok(service.getAllMovies());
+	}
+	
+	//Build Get Movie 
+	@GetMapping("/{id}")
+	public ResponseEntity<Movie> getMovie(@PathVariable int id) throws MovieNotFoundException{
+		return ResponseEntity.ok(service.getMovieById(id));
+	}
+	
+	//Create Add Movie 
+	@PostMapping("/")
 	public ResponseEntity<Object> saveMovie(@RequestBody @Valid MovieDto movieRequest){
 //		return ResponseEntity.ok(service.SaveMovie(movieRequest));
 	    try {
@@ -41,20 +53,8 @@ public class MovieController {
 	    }
 	}
 
-	//Build Get All Movie 
-	@GetMapping("/all")
-	public ResponseEntity<List<Movie>> getAllMovies(){
-		return ResponseEntity.ok(service.getAllMovies());
-	}
-	
-	//Build Get Movie 
-	@GetMapping("/{id}")
-	public ResponseEntity<Movie> getMovie(@PathVariable int id) throws MovieNotFoundException{
-		return ResponseEntity.ok(service.getMovieById(id));
-	}
-	
 	//Build update Movie
-	@PutMapping("/update/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Movie> updateEmployee(	@PathVariable("id") int id, 
 													@RequestBody MovieDto updateMovie) throws MovieNotFoundException{
 		
@@ -63,7 +63,7 @@ public class MovieController {
 	}
 	
 	//Build Delete Movie 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteMovie(@PathVariable int id) throws MovieNotFoundException {
 	    try {
 	        service.deleteMovie(id);
