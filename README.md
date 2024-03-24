@@ -1,3 +1,52 @@
+# Movie RESTful
+
+This is a simple Java / Maven / Spring Boot (version 3.2.4) application that can be used as a starter for creating a RESTful with validation and exeception handler.
+
+## How to Run
+
+This application is packaged as a war which has Tomcat 10 embedded. No Tomcat or JBoss installation is necessary. You run it using the java -jar command.
+
+### Steps to Setup
+
+Clone the application
+
+    https://github.com/suntoryota/movie-restfulapi.git  
+
+Create Postgresql database
+
+    create database user_database
+
+Create Table
+
+    CREATE TABLE movie_tbl (
+    id INTEGER PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    rating DECIMAL(2, 1),
+    image VARCHAR(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );   
+
+Change mysql username and password as per your installation
+
+    - open src/main/resources/application.properties
+
+    - change spring.datasource.username and spring.datasource.password 
+
+## About the Service
+
+The service is just a simple REST service. It uses Postgresql to store the data.
+
+To use this API, ensure you have a server running. The server URL is http://localhost:9090
+
+Here is what this little application demonstrates:
+- Full integration with the latest Spring Framework dependency injection
+- Writing a RESTful service using annotation: JSON request / response
+-  Exception mapping from application exceptions to the right HTTP response 
+- Spring Data JPA configuration and familiar annotations
+- Automatic CRUD functionality the data source using Spring Repository pattern
+- Demonstrates MockMVC test framework 
 
 ## API Reference
 
