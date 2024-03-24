@@ -1,206 +1,150 @@
 
-# Movie RESTful
-
-This is a sample Java / Maven / Spring Boot (version 3.2.4) application that can be used as a starter for creating a RESTful with validation and execption handler.
-
-
-## How to Run
-
-This application is packaged as a war which has Tomcat 10 embedded. No Tomcat or JBoss installation is necessary. You run it using the java -jar command.
-
-## Steps to Setup
-
-Clone the application
-
-    https://github.com/suntoryota/movie-restfulapi.git  
-
-Create Postgresql database
-
-    create database user_database
-
-Change mysql username and password as per your installation
-
-    - open src/main/resources/application.properties
-
-    - change spring.datasource.username and spring.datasource.password 
-
-## About the Service
-
-The service is just a simple REST service. It uses Postgresql to store the data.
-
-To use this API, ensure you have a server running. The server URL is http://localhost:9090
-
-Here is what this little application demonstrates:
-- Full integration with the latest Spring Framework: inversion of control, dependency injection
-- Writing a RESTful service using annotation: JSON request / response
--  Exception mapping from application exceptions to the right HTTP response 
-- Spring Data Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations.
-- Automatic CRUD functionality against the data source using Spring Repository pattern
-- Demonstrates MockMVC test framework with associated libraries
-
-     
-    
 ## API Reference
 
 #### The app defines following CRUD APIs.
 
-| Method    | Url           | Description                   | 
-| :-------- | :-------      | :-------------------------    |
-| `GET `    | `/movies`     | Get all movies                |
-| `POST `   | `/movies`     | Create  movies                |
-| `GET `    | `/movies/{id}`| Get movies by id              |
-| `PUT `    | `/movies/{id}`| Update movies                 |
-| `DELETE ` | `/movies/{id}`| Delete movies by id           |
+| Method    | Url                       | Description                   | 
+| :-------- | :-------                  | :-------------------------    |
+| `GET `    | `api/movie`               | Get all movies                |
+| `POST `   | `api/movie/create`        | Create  movies                |
+| `GET `    | `api/movie/detail/{id}`   | Get     movies by id          |
+| `PUT `    | `api/movie/update/{id}`   | Update  movies                |
+| `DELETE ` | `api/movie/delete/{id}`   | Delete  movies by id          |
 
 You can test them using postman or any other rest client.
 
 
 ## Sample Valid JSON Request Bodys
 
-#### POST http://localhost:9090/movies/
+#### POST    - api/movie/create
 ```
+Request :
+
 {
-    "title": "Pengabdi setan 1",
-    "description": "1 Pengabdi setan",
-    "rating": 3.0,
+    "title": "Pengabdi Setan 4",
+    "description": "Pengabdi Setan 4 Description",
+    "rating": 5.0,
     "image":""
 }
 
+Response :
 {
-    "id": 2052,
-    "title": "Pengabdi setan 1",
-    "description": "1 Pengabdi setan",
-    "rating": 3.0,
+    "id": 2205,
+    "title": "Pengabdi Setan 4",
+    "description": "Pengabdi Setan 4 Description",
+    "rating": 5.0,
     "image": "",
-    "created_at": "2024-03-24 02:12:41.478592",
-    "updated_at": "2024-03-24 02:12:41.478592"
+    "created_at": "2024-03-25 05:06:10",
+    "updated_at": "2024-03-25 05:06:10"
 }
 ```
 
-#### GET http://localhost:9090/movies/
+#### GET    - api/movie
 ```
+Response :
 [
     {
-        "id": 2052,
-        "title": "Pengabdi setan 1",
-        "description": "1 Pengabdi setan",
-        "rating": 3.0,
+        "id": 2202,
+        "title": "Pengabdi Setan 1",
+        "description": "Pengabdi Setan 1 Description",
+        "rating": 5.0,
         "image": "",
-        "created_at": "2024-03-24 02:12:41.478592",
-        "updated_at": "2024-03-24 02:12:41.478592"
+        "created_at": "2024-03-25 05:03:29",
+        "updated_at": "2024-03-25 05:03:29"
     },
     {
-        "id": 2053,
-        "title": "Pengabdi setan 2",
-        "description": "2 Pengabdi setan",
-        "rating": 4.0,
+        "id": 2203,
+        "title": "Pengabdi Setan 2",
+        "description": "Pengabdi Setan 2 Description",
+        "rating": 5.0,
         "image": "",
-        "created_at": "2024-03-24 02:15:02.858352",
-        "updated_at": "2024-03-24 02:15:02.858352"
+        "created_at": "2024-03-25 05:04:09",
+        "updated_at": "2024-03-25 05:04:09"
+    },
+    {
+        "id": 2204,
+        "title": "Pengabdi Setan 3",
+        "description": "Pengabdi Setan 3 Description Update",
+        "rating": 5.0,
+        "image": "",
+        "created_at": "2024-03-25 05:04:19",
+        "updated_at": "2024-03-25 05:05:29"
     }
 ]
 ```
-#### GET http://localhost:9090/movies/2052
+#### GET   - api/movie/detail/{id}
 ```
+Response :
 {
-    "id": 2052,
-    "title": "Pengabdi setan 1",
-    "description": "1 Pengabdi setan",
-    "rating": 3.0,
-    "image": "",
-    "created_at": "2024-03-24 02:12:41.478592",
-    "updated_at": "2024-03-24 02:12:41.478592"
-}
-```
-#### PUT http://localhost:9090/movies/2052
-```
-{
-    "title": "Pengabdi setan 2 update",
-    "description": "update 2 Pengabdi setan",
-    "rating": 5.0,
-    "image":""
-}
-
-{
-    "id": 2052,
-    "title": "Pengabdi setan 2 update",
-    "description": "update 2 Pengabdi setan",
+    "id": 2204,
+    "title": "Pengabdi Setan 3",
+    "description": "Pengabdi Setan 3 Description",
     "rating": 5.0,
     "image": "",
-    "created_at": "2024-03-24 02:12:41.478592",
-    "updated_at": "2024-03-24 02:17:14.671532"
+    "created_at": "2024-03-25 05:04:19.746932",
+    "updated_at": "2024-03-25 05:04:19.746932"
 }
 ```
-#### DELETE http://localhost:9090/movies/2052
+#### PUT   - api/movie/update/{id}
 ```
+Resquest :
 {
-	"message : "Movie deleted successfully!"
+"title": "Pengabdi Setan 3",
+"description": "Pengabdi Setan 3 Description Update",
+"rating": 5.0,
+"image":""
 }
-```
-#### Validation Message
-```
+
+Response :
 {
-    "title": "A",
-    "description": "update 2 Pengabdi setan",
+    "id": 2204,
+    "title": "Pengabdi Setan 3",
+    "description": "Pengabdi Setan 3 Description Update",
     "rating": 5.0,
+    "image": "",
+    "created_at": "2024-03-25 05:04:19.746932",
+    "updated_at": "2024-03-25 05:05:29.711697"
+}
+```
+#### DELETE   - api/movie/delete/{id}
+```
+
+"Movie deleted successfully!"
+
+```
+#### Validation Message & Exception
+```
+Request :
+{
+    "title": "",
+    "description": "",
+    "rating": 10,
     "image":""
 }
 
+Response :
 {
-    "title": "Title must be at least 1 character long"
+    "timeStamp": "2024-03-25T05:24:41.8479396",
+    "errorMessage": [
+        "Description must be at least 10 characters long",
+        "Rating must be less than or equal to 5",
+        "title is mandatory",
+        "title is mandatory",
+        "description is mandatory",
+        "description is mandatory",
+        "Title must be at least 1 character long"
+    ],
+    "status": "BAD_REQUEST",
+    "statusCode": 400
 }
 ```
 ```
-{
-    "title": "Sang Pengabdi Setan",
-    "description": "U",
-    "rating": 5.0,
-    "image":""
-}
-
-{
-    "description": "Description must be at least 10 characters long"
-}
-```
-```
-{
-    "title": "Sang Pengabdi Setan",
-    "description": "Setan Pengabdi Setan",
-    "rating":11.0,
-    "image":""
-}
-
-{
-    "title": "Sang Pengabdi Setan",
-    "description": "Setan Pengabdi Setan",
-    "rating":11.0,
-    "image":""
-}
-```
-#### Exception 
-#### POST http://localhost:9090/movies/
-
-```
-{
-    "title": "Sang Pengabdi Setan",
-    "description": "Setan Pengabdi Setan",
-    "rating":5.0,
-    "image":""
-}
-
 {
 	errormessage: "This movie already exists!"
 }
 ```
-
-#### GET http://localhost:9090/movies/125
 ```
 {
     "errormessage": "Movie not found with id: 125"
 }
 ```
-
-
-
-
-
