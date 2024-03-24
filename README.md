@@ -197,12 +197,23 @@ Response :
 }
 ```
 ```
+Request :
+
 {
-    "errormessage: "This movie is already exists !"
+    "title": "Pengabdi Setan 4",
+    "description": "Pengabdi Setan 4 Description",
+    "rating": 5.0,
+    "image":""
+}
+
+Response :
+
+{
+    "message": "Movie with title 'Pengabdi Setan 4' already exists!"
 }
 ```
 ```
 {
-    "errormessage": "Movie not found with id: 125 !"
+    "message": "Movie not found with ID : 125 !"
 }
 ```
