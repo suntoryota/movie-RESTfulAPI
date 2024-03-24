@@ -32,7 +32,9 @@ Change mysql username and password as per your installation
 
     - open src/main/resources/application.properties
 
-    - change spring.datasource.username and spring.datasource.password 
+    - change spring.datasource.username 
+
+    - change spring.datasource.password 
 
 ## About the Service
 
@@ -77,6 +79,7 @@ Request :
 }
 
 Response :
+
 {
     "id": 2205,
     "title": "Pengabdi Setan 4",
@@ -91,6 +94,7 @@ Response :
 #### GET    - api/movie
 ```
 Response :
+
 [
     {
         "id": 2202,
@@ -124,6 +128,7 @@ Response :
 #### GET   - api/movie/detail/{id}
 ```
 Response :
+
 {
     "id": 2204,
     "title": "Pengabdi Setan 3",
@@ -137,6 +142,7 @@ Response :
 #### PUT   - api/movie/update/{id}
 ```
 Resquest :
+
 {
 "title": "Pengabdi Setan 3",
 "description": "Pengabdi Setan 3 Description Update",
@@ -145,6 +151,7 @@ Resquest :
 }
 
 Response :
+
 {
     "id": 2204,
     "title": "Pengabdi Setan 3",
@@ -158,12 +165,13 @@ Response :
 #### DELETE   - api/movie/delete/{id}
 ```
 
-"Movie deleted successfully!"
+Movie deleted successfully!
 
 ```
 #### Validation Message & Exception
 ```
 Request :
+
 {
     "title": "",
     "description": "",
@@ -172,6 +180,7 @@ Request :
 }
 
 Response :
+
 {
     "timeStamp": "2024-03-25T05:24:41.8479396",
     "errorMessage": [
