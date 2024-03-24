@@ -125,7 +125,7 @@ Response :
     }
 ]
 ```
-#### GET   - api/movie/detail/{id}
+#### GET BY ID   - api/movie/detail/{id}
 ```
 Response :
 
@@ -198,11 +198,11 @@ Response :
 ```
 ```
 {
-	errormessage: "This movie already exists!"
+    "errormessage: "This movie is already exists !"
 }
 ```
 ```
 {
-    "errormessage": "Movie not found with id: 125"
+    "errormessage": "Movie not found with id: 125 !"
 }
 ```
