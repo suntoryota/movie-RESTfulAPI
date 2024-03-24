@@ -1,6 +1,7 @@
 package com.soya.movierestful.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soya.movierestful.config.ErrorResponse;
 import com.soya.movierestful.dto.MovieDto;
 import com.soya.movierestful.entity.Movie;
 import com.soya.movierestful.exception.MovieAlreadyExistsException;
@@ -22,54 +24,61 @@ import com.soya.movierestful.service.MovieService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/api/movie")
 public class MovieController {
 	
 	@Autowired
-	private MovieService service;
+	private MovieService movieService;
 	
-	//Build Get List All Movie 
-	@GetMapping("/")
-	public ResponseEntity<List<Movie>> getAllMovies(){
-		return ResponseEntity.ok(service.getAllMovies());
-	}
-	
-	//Build Get Movie 
-	@GetMapping("/{id}")
-	public ResponseEntity<Movie> getMovie(@PathVariable int id) throws MovieNotFoundException{
-		return ResponseEntity.ok(service.getMovieById(id));
-	}
-	
-	//Create Add Movie 
-	@PostMapping("/")
-	public ResponseEntity<Object> saveMovie(@RequestBody @Valid MovieDto movieRequest){
-//		return ResponseEntity.ok(service.SaveMovie(movieRequest));
-	    try {
-//	        service.SaveMovie(movieRequest);
-			return ResponseEntity.ok(service.createMovie(movieRequest));
-//	        return ResponseEntity.status(HttpStatus.CREATED).body("Movie created successfully!\n" + movieRequest);
-	    } catch (MovieAlreadyExistsException e) {
-	        return ResponseEntity.status(HttpStatus.CONFLICT).body("This movie already exists!\n" + movieRequest);
-	    }
-	}
+    @GetMapping("/")
+    public ResponseEntity<Object> getAllMovies() {
+        try {
+            List<Movie> movies = movieService.getAllMovies();
+            return ResponseEntity.ok(movies);
+        } catch (Exception e) { 
+        	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+    
+	@GetMapping("/details/{id}")
+    public ResponseEntity<Object> detailsMovie(@PathVariable int id) {
+        try {
+            Movie movie = movieService.detailsMovie(id); 
+            return ResponseEntity.ok(movie);
+        } catch (MovieNotFoundException e) {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+        }
+    }
 
-	//Build update Movie
-	@PutMapping("/{id}")
-	public ResponseEntity<Movie> updateEmployee(	@PathVariable("id") int id, 
-													@RequestBody MovieDto updateMovie) throws MovieNotFoundException{
-		
-		Movie movie = service.updateMovie(id, updateMovie);
-		return ResponseEntity.ok(movie);
-	}
-	
-	//Build Delete Movie 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteMovie(@PathVariable int id) throws MovieNotFoundException {
-	    try {
-	        service.deleteMovie(id);
-	        return ResponseEntity.ok("Movie deleted successfully!");
-	    } catch (MovieNotFoundException e) {
-	        return ResponseEntity.status(HttpStatus.CONFLICT).body("The movie with ID : " + id + " not found!");
-	    }
-	}
+	@PostMapping("/create")
+    public ResponseEntity<Object> createMovie(@RequestBody @Valid MovieDto movieDto) {
+        try {
+            Movie createdMovie = movieService.createMovie(movieDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
+        } catch (MovieAlreadyExistsException e) {
+        	return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateMovie(@PathVariable int id, @RequestBody MovieDto updateMovieDto) {
+        try {
+            Movie updatedMovie = movieService.updateMovie(id, updateMovieDto);
+            return ResponseEntity.ok(updatedMovie);
+        } catch (MovieNotFoundException e) {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteMovie(@PathVariable int id) {
+    	 try {
+             movieService.deleteMovie(id);
+             return ResponseEntity.ok("Employee deleted successfully!");
+         } catch (MovieNotFoundException e) {
+        	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+         }
+    }
+   
 }

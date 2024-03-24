@@ -33,4 +33,5 @@ public class Movie {
     @UpdateTimestamp  
     private String updated_at;
 
+
 }

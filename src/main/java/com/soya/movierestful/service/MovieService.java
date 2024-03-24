@@ -14,12 +14,14 @@ public interface MovieService {
 
 	Movie createMovie(MovieDto movieDto);
 	
-	Movie getMovieById(int id) throws MovieNotFoundException;
-	
 	List<Movie> getAllMovies();
+	
+	Movie detailsMovie(int id) throws MovieNotFoundException; 
 	
 	Movie updateMovie(int id, MovieDto updateMovie) throws MovieNotFoundException;
 	
 	ResponseEntity<String> deleteMovie(int id) throws MovieNotFoundException;
+
+
 	
 }
