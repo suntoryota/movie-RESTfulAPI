@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity; 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,10 +41,10 @@ public class MovieController {
         }
     }
     
-	@GetMapping("/details/{id}")
+	@GetMapping("/detail/{id}")
     public ResponseEntity<Object> detailsMovie(@PathVariable int id) {
         try {
-            Movie movie = movieService.detailsMovie(id); 
+            ResponseEntity<Movie> movie = movieService.detailsMovie(id); 
             return ResponseEntity.ok(movie);
         } catch (MovieNotFoundException e) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
@@ -75,7 +75,7 @@ public class MovieController {
     public ResponseEntity<Object> deleteMovie(@PathVariable int id) {
     	 try {
              movieService.deleteMovie(id);
-             return ResponseEntity.ok("Employee deleted successfully!");
+             return ResponseEntity.ok("Movie deleted successfully!");
          } catch (MovieNotFoundException e) {
         	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
          }

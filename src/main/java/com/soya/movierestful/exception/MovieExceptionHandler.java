@@ -4,18 +4,17 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-@RestControllerAdvice
+@ControllerAdvice
 public class MovieExceptionHandler {
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -35,8 +34,8 @@ public class MovieExceptionHandler {
 		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(MovieExistsException.class)
-	public ResponseEntity<Object> MovieExistsException(MovieExistsException mv){
+	@org.springframework.web.bind.annotation.ExceptionHandler(MovieAlreadyExistsException.class)
+	public ResponseEntity<Object> MovieExistsException(MovieAlreadyExistsException mv){
 		
 		ErrorDetails errorDetails = new ErrorDetails();
 		errorDetails.setStatusCode(HttpStatus.OK.value());

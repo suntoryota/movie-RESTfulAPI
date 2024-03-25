@@ -16,12 +16,11 @@ public interface MovieService {
 	
 	List<Movie> getAllMovies();
 	
-	Movie detailsMovie(int id) throws MovieNotFoundException; 
+	ResponseEntity<Movie> detailsMovie(int id) throws MovieNotFoundException; 
 	
 	Movie updateMovie(int id, MovieDto updateMovie) throws MovieNotFoundException;
 	
 	ResponseEntity<String> deleteMovie(int id) throws MovieNotFoundException;
-
 
 	
 }

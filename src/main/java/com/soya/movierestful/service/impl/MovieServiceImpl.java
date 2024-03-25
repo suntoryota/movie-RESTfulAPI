@@ -17,6 +17,7 @@ import com.soya.movierestful.exception.MovieNotFoundException;
 import com.soya.movierestful.repository.MovieRepository;
 import com.soya.movierestful.service.MovieService;
 
+
 @Service
 public class MovieServiceImpl implements MovieService{
 	
@@ -44,16 +45,19 @@ public class MovieServiceImpl implements MovieService{
 		return repository.findAll();
 	}
 	
-    @Override
-    public Movie detailsMovie(int id)  throws MovieNotFoundException{   
-		return repository.findById(id).orElseThrow(() 
-				-> new MovieNotFoundException("Movie not found with id: " + id));
-   }
+	@Override
+	public ResponseEntity<Movie> detailsMovie(int id) {
+
+	    Movie movie = repository.findById(id)
+	            .orElseThrow(() -> new MovieNotFoundException("Movie not found with ID: " + id));
+
+	    return ResponseEntity.ok(movie); 
+	}
 	
     @Override
     public Movie updateMovie(int id, MovieDto updateMovie) throws MovieNotFoundException {
         Movie movie = repository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with ID: " + id));
 
         movie.setTitle(updateMovie.getTitle());
         movie.setDescription(updateMovie.getDescription());
@@ -65,7 +69,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public ResponseEntity<String> deleteMovie(int id) throws MovieNotFoundException {
         Movie movie = repository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with ID: " + id));
 
             repository.delete(movie);
             ErrorResponse response = new ErrorResponse("Movie deleted successfully");
