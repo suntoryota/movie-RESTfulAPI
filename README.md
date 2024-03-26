@@ -213,15 +213,14 @@ Response :
 }
 ```
 ```
-GET http://localhost:9090/api/movie/details/11
+GET http://localhost:9090/api/movie/detail/4
+PUT http://localhost:9090/api/movie/update/4
+PUT http://localhost:9090/api/movie/delete/4
 
 Response :
 
 {
-    "timestamp": "2024-03-24T23:26:42.023+00:00",
-    "status": 404,
-    "error": "Not Found",
-    "path": "/api/movie/details/11"
+    "message": "Movie not found with ID: 4",
 }
 ```
 
