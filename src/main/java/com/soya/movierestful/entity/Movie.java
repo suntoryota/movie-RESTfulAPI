@@ -1,5 +1,7 @@
 package com.soya.movierestful.entity;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,10 +30,10 @@ public class Movie {
 	private String 	image; 
 	
     @CreationTimestamp
-    private String created_at;
+    private LocalDateTime created_at;
     
     @UpdateTimestamp  
-    private String updated_at;
+    private LocalDateTime updated_at;
 
 
 }

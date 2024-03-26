@@ -1,6 +1,8 @@
 package com.soya.movierestful.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,9 @@ public class MovieController {
             return ResponseEntity.ok(movies);
         } catch (Exception e) { 
         	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
@@ -47,6 +52,10 @@ public class MovieController {
             ResponseEntity<Movie> movie = movieService.detailsMovie(id); 
             return ResponseEntity.ok(movie);
         } catch (MovieNotFoundException e) {
+          	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
         }
     }
@@ -57,6 +66,10 @@ public class MovieController {
             Movie createdMovie = movieService.createMovie(movieDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
         } catch (MovieAlreadyExistsException e) {
+          	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
         	return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
         }
     }
@@ -67,6 +80,10 @@ public class MovieController {
             Movie updatedMovie = movieService.updateMovie(id, updateMovieDto);
             return ResponseEntity.ok(updatedMovie);
         } catch (MovieNotFoundException e) {
+          	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
         }
     }
@@ -77,8 +94,26 @@ public class MovieController {
              movieService.deleteMovie(id);
              return ResponseEntity.ok("Movie deleted successfully!");
          } catch (MovieNotFoundException e) {
+           	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
         	 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
          }
+    }
+    
+	@GetMapping("/detail/title/{title}")
+    public ResponseEntity<Object> detailsMovieByTitle(@PathVariable String title) {
+        try {
+            Optional<Movie> movies = movieService.findByTitle(title);  
+            return ResponseEntity.ok(movies);
+        } catch (MovieNotFoundException e) {
+          	ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+				    	  errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+				          errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+				          errorResponse.setTimeStamp(LocalDateTime.now());
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+        }
     }
    
 }

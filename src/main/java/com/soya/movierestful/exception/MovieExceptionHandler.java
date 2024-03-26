@@ -11,14 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.soya.movierestful.config.ErrorResponse;
 
 
 @ControllerAdvice
 public class MovieExceptionHandler {
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> methodValidation(MethodArgumentNotValidException mv){
 		
 		List<String> fieldErrors = mv.getBindingResult().getFieldErrors().stream()
@@ -34,27 +37,23 @@ public class MovieExceptionHandler {
 		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(MovieAlreadyExistsException.class)
-	public ResponseEntity<Object> MovieExistsException(MovieAlreadyExistsException mv){
-		
-		ErrorDetails errorDetails = new ErrorDetails();
-		errorDetails.setStatusCode(HttpStatus.OK.value());
-		errorDetails.setStatus(HttpStatus.OK.name());
-		errorDetails.setErrorMessage(mv.getMessage());
-		errorDetails.setTimeStamp(LocalDateTime.now());
-		
-		return new ResponseEntity<>(errorDetails,HttpStatus.OK);
-	}
+    @ExceptionHandler(MovieAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> MovieExistsException(MovieAlreadyExistsException mv) {
+        ErrorResponse errorResponse = new ErrorResponse(mv.getMessage());
+        errorResponse.setStatusCode(HttpStatus.OK.value());
+        errorResponse.setStatus(HttpStatus.OK.name());
+        errorResponse.setTimeStamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(MovieNotFoundException.class)
-	public ResponseEntity<Object> MovieNotFoundException(MovieNotFoundException mv){
-		
-		ErrorDetails errorDetails = new ErrorDetails();
-		errorDetails.setStatusCode(HttpStatus.NOT_FOUND.value());
-		errorDetails.setStatus(HttpStatus.NOT_FOUND.name());
-		errorDetails.setErrorMessage(mv.getMessage());
-		errorDetails.setTimeStamp(LocalDateTime.now());
-		
-		return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
-	}
+    @ExceptionHandler(MovieNotFoundException.class)
+    public ResponseEntity<ErrorResponse> MovieNotFoundException(MovieNotFoundException mv) {
+        ErrorResponse errorResponse = new ErrorResponse(mv.getMessage());
+        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.name());
+        errorResponse.setTimeStamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }

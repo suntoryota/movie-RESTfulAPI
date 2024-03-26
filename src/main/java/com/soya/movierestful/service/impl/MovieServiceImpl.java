@@ -1,6 +1,8 @@
 package com.soya.movierestful.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,24 +73,34 @@ public class MovieServiceImpl implements MovieService{
         Movie movie = repository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException("Movie not found with ID: " + id));
 
-            repository.delete(movie);
-            ErrorResponse response = new ErrorResponse("Movie deleted successfully");
-            String jsonResponse;
+        repository.delete(movie);
+        String jsonResponse = getSuccessResponseJson("Movie deleted successfully");
 
-            try {
-                // Convert the response object to JSON
-                ObjectMapper mapper = new ObjectMapper();
-                jsonResponse = mapper.writeValueAsString(response);
-            } catch (JsonProcessingException e) {
-                // Handle the exception if JSON conversion fails
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error converting response to JSON");
-            }
-
-            return ResponseEntity.ok(jsonResponse);
-        }
-     }
+        return ResponseEntity.ok(jsonResponse);
+    }
     
+    private String getSuccessResponseJson(String message) {
+        try {
+            ErrorResponse response = new ErrorResponse(message);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+        	 // Handle the exception if JSON conversion fails
+            ErrorResponse errorResponse = new ErrorResponse("Error converting response to JSON");
+            errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+            errorResponse.setTimeStamp(LocalDateTime.now());
+            return errorResponse.getMessage();
+        }
+    }
 
+    @Override
+    public Optional<Movie> findByTitle(String title) {
+        return repository.findByTitle(title);
+    }
+
+    
+}
 
 
 	
